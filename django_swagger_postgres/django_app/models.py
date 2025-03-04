@@ -2,14 +2,14 @@ from django.db import models
 
 
 class Login(models.Model):
-    email = models.CharField(max_length=50, null=False, blank=True, unique=True)
+    email = models.EmailField(max_length=50, null=False, blank=True, unique=True)
 
     def __str__(self):
         return self.email
 
     class Meta:
-        verbose_name = 'login'
-        verbose_name_plural = 'logins'
+        verbose_name = 'mail'
+        verbose_name_plural = 'mails'
         ordering = ('email',)
 
 

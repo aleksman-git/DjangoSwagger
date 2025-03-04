@@ -5,7 +5,7 @@ from .models import *
 from .serializers import LoginSerializer, PasswordSerializer
 
 
-class GetMethod(viewsets.ModelViewSet):
+class LoginView(viewsets.ModelViewSet):
     queryset = Login.objects.all()
     serializer_class = LoginSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
