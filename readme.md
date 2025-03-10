@@ -1,8 +1,9 @@
-Для запуска проекта необходимо в файле settings.py внести изменения. 
-В настройках подключения указать имя сервера пользователя и пароль
-CREATE ROLE "user" WITH LOGIN NOINHERIT CREATEDB PASSWORD 'user';
-
-CREATE DATABASE djangodb WITH OWNER = "user" ENCODING = 'UTF8';
-
+Для запуска проекта необходимо внести изменения в файл settings.py. 
+В настройках подключения (DATABASES =) указать свои параметры.
+Выполнить миграцию с помощью следующих команд:
+    python manage.py makemigrations
+    python manage.py migrate
+Запустить сервер:
+    python manage.py runserver
 После успешного запуска, документация SWAGGER будет доступна по адресу:
 http://127.0.0.1:8000/swagger/

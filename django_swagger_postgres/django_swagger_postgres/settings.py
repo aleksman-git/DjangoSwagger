@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'django_swagger_postgres.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangodb',                         # DataBase name
+        'NAME': 'djangodb',
         'USER': 'user',
         'PASSWORD': 'user',
         'HOST': 'localhost',
