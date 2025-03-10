@@ -10,7 +10,6 @@ class Login(models.Model):
     class Meta:
         ordering = ('email',)
         verbose_name = 'mail'
-        verbose_name_plural = 'mails'
 
 """
 class Password(models.Model):
