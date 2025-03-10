@@ -12,7 +12,6 @@ class Login(models.Model):
         verbose_name_plural = 'mails'
         ordering = ('email',)
 
-
 """
 class Password(models.Model):
     pw = models.CharField(max_length=100, null=True,blank=True)
