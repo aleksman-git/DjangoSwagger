@@ -26,6 +26,10 @@ class LoginViewSet(viewsets.ModelViewSet):
             email_list = Login.objects.all().values()
             serializer = LoginSerializer(email_list, many=True)
             data = serializer.data
+            # проверить пустой ли список
+            if not data:
+                details = {'message': 'Список пуст'}
+                return Response(details)
             return Response(data)
         except Exception as ex:
             details = {'message': 'Не удалось получить адреса',
@@ -43,7 +47,7 @@ class LoginViewSet(viewsets.ModelViewSet):
            # получить email по ключу (id пользователя)
            email = Login.objects.get(id=kwargs['pk'])
            # передать в сериализатор значение email
-           # так как получить надо одно значение many=False
+           # так как надо получить одно значение many=False
            serializer = LoginSerializer(email, many=False)
            data = serializer.data
            return Response(data)
