@@ -1,29 +1,89 @@
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework.response import Response
+from pickle import FALSE
+from rest_framework import status
 from rest_framework import viewsets
-from .models import *
-from .serializers import LoginSerializer, PasswordSerializer
+from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
+#from drf_spectacular.utils import OpenApiParameter
 
 
-class LoginView(viewsets.ModelViewSet):
+from .models import Login
+from .serializers import LoginSerializer
+
+
+class LoginViewSet(viewsets.ModelViewSet):
     queryset = Login.objects.all()
     serializer_class = LoginSerializer
-    http_method_names = ['get', 'post', 'put', 'delete']
+    http_method_names = ['get', 'post']#, 'put', 'delete']
 
-    @swagger_auto_schema(operation_description="login_list",responses={
-            200: 'list of logins',
-            404: 'list of logins not found'
-        })
+    @extend_schema(
+        responses={200: LoginSerializer(many=True), 400: 'email не найден'},  # Добавить реализацию Serializer400
+        summary="Получить адреса почты всех зарегистрированных пользователей",
+        description="Получить все email адреса"
+    )
     def list(self, request, *args, **kwargs):
-        login_list = list(Login.objects.all().values())
-        return Response(login_list)
+        try:
+            # получить все email адреса
+            email_list = Login.objects.all().values()
+            serializer = LoginSerializer(email_list, many=True)
+            data = serializer.data
+            return Response(data)
+        except Exception as ex:
+            details = {'message': 'Не удалось получить адреса',
+                       'details': str(ex)}
+            # детализация кода ошибки
+            return Response(details, status=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        responses={200: LoginSerializer(many=False), 400: 'email не найден'},  # Добавить реализацию Serializer400
+        summary="Получить адрес почты зарегистрированного пользователя",
+        description="Получить email по id пользователя"
+   )
+    def retrieve(self, request, *args, **kwargs):
+       try:
+           # получить email по ключу (id пользователя)
+           email = Login.objects.get(id=kwargs['pk'])
+           # передать в сериализатор значение email
+           # так как получить надо одно значение many=False
+           serializer = LoginSerializer(email, many=False)
+           data = serializer.data
+           return Response(data)
+       except Exception as ex:
+           details = {'message': 'Не удалось получить адрес по правилу фильтрации',
+                      'details': str(ex)}
+           # детализация кода ошибки
+           return Response(details, status=status.HTTP_400_BAD_REQUEST)
+
+#   def get(self, *args, **kwargs):
+#       try:
+#           # определить правило в кластере
+#           cluster = kwargs_get(kwargs, model=Cluster, param='id_cluster')
+#           # проверит права на кластер
+#           cluster_permission(self.request, cluster)
+#           # получить правило
+#           rule = kwargs_get(kwargs, query=RuleFirewall.objects.filter(cluster=cluster), param='id_rule')
+#           # получить все наборы
+#           kit = RuleFirewallKit.objects.filter(rule=rule)
+#           serializer = RuleKitViewSerializer(kit, many=True)
+#           data = serializer.data
+#            return Response(data)
+#        except Exception as ex:
+
+
+#        details = {'message': 'Не удалось получить список всех наборов в правиле',
+#                   'details': str(ex)}
+#        return Response(details, status=status.HTTP_400_BAD_REQUEST)
+
+"""
+    @swagger_auto_schema(responce_body=LoginSerializer)
+    def list(self, request, *args, **kwargs):
+        return super(LoginViewSet, self).list(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_description="login_read",responses={
             200: 'your login',
             404: 'your login not found'
         })
     def retrieve(self, request, *args, **kwargs):
-        login_list_id = list(Login.objects.filter(id=kwargs['pk']).values())
+        login_list_id = Login.objects.filter(id=kwargs['pk']).values()
         return Response(login_list_id)
 
     @swagger_auto_schema(operation_description="login_create")
@@ -96,3 +156,5 @@ class PasswordView(viewsets.ModelViewSet):
             return Response({"message": "Password UPDATED"})
         else:
             return Response({"message": "Can't UPDATE"})
+
+"""

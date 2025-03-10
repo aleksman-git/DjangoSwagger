@@ -13,7 +13,7 @@ class Login(models.Model):
         ordering = ('email',)
 
 
-
+"""
 class Password(models.Model):
     pw = models.CharField(max_length=100, null=True,blank=True)
     login_id = models.ForeignKey(Login, on_delete=models.CASCADE)
@@ -25,4 +25,4 @@ class Password(models.Model):
         verbose_name = 'password'
         verbose_name_plural = 'passwords'
         ordering = ('pw',)
-
+"""
