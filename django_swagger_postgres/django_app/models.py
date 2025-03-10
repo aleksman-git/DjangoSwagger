@@ -8,9 +8,9 @@ class Login(models.Model):
         return self.email
 
     class Meta:
+        ordering = ('email',)
         verbose_name = 'mail'
         verbose_name_plural = 'mails'
-        ordering = ('email',)
 
 """
 class Password(models.Model):

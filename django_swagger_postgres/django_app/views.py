@@ -1,10 +1,7 @@
-from pickle import FALSE
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
-#from drf_spectacular.utils import OpenApiParameter
-
 
 from .models import Login
 from .serializers import LoginSerializer
@@ -57,25 +54,7 @@ class LoginViewSet(viewsets.ModelViewSet):
            # детализация кода ошибки
            return Response(details, status=status.HTTP_400_BAD_REQUEST)
 
-#   def get(self, *args, **kwargs):
-#       try:
-#           # определить правило в кластере
-#           cluster = kwargs_get(kwargs, model=Cluster, param='id_cluster')
-#           # проверит права на кластер
-#           cluster_permission(self.request, cluster)
-#           # получить правило
-#           rule = kwargs_get(kwargs, query=RuleFirewall.objects.filter(cluster=cluster), param='id_rule')
-#           # получить все наборы
-#           kit = RuleFirewallKit.objects.filter(rule=rule)
-#           serializer = RuleKitViewSerializer(kit, many=True)
-#           data = serializer.data
-#            return Response(data)
-#        except Exception as ex:
 
-
-#        details = {'message': 'Не удалось получить список всех наборов в правиле',
-#                   'details': str(ex)}
-#        return Response(details, status=status.HTTP_400_BAD_REQUEST)
 
 """
     @swagger_auto_schema(responce_body=LoginSerializer)
